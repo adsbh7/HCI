@@ -1,0 +1,211 @@
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <title></title>
+  </head>
+
+
+
+  <body>
+    <h1>Register Form</h1>
+    <form name=frm1>
+      <li>First Name : <input type = "text" name = "f_name"></li>
+      <li>Last Name : <input type = "text" name = "l_name"></li>
+      <li>Image <input type ="file" name="filename" id="imgfile" onchange="file_check(this)" accept="image/gif, image/jpeg, image/png">
+      <br><br><img id="blah" src="#" alt="your image" /></li>
+      <br><li>Contact information<br>
+      - cell phone(<span style="color : red">without '-'</span>) 
+      : <input type = "tel"  name = "phone" placeholder="000-0000-0000" onkeypress="num_check(event)"/><br>
+      - e-mail : <input type = "email" name = "e-mail"/> </li>
+      <br><li>Career goal / objective : <br><textarea name ="goal" cols = "40" rows = "5"> </textarea></li>
+      
+      <br><li>Education <input type = "button" value="+"
+      onclick = "add_click_edu();"><br>
+      School   :  <input type = "text" name = "edu"><br>
+      major    :  <input type = "text" name = "edu"><br>
+      duration :  <input type = "text" name = "edu"><br><br> 
+      <div id="ed"></div>
+      </li>
+      
+      <br><li>Experience <input type = "button" value="+"
+        onclick = "add_click_exp();"><br> 
+        Organization   :  <input type = "text" name = "exp"><br>
+      	duties    :  <input type = "text" name = "exp"><br>
+      	duration :  <input type = "text" name = "exp"><br><br> 
+      	<div id="ex"></div>
+      </li>
+      <li>Skills <input type = "button" value="+"
+        onclick = "add_click_sk();"> 
+        <input type = "button" value="finish"
+        onclick = "delete_click_sk();"><br> 
+        Field : <input type = "text" name = "field"> Details : <input type = "text" name = "detail"><br>
+        <div id = "skills"></div>
+    
+      <br><table border = "1" width = "500" id = "sk">
+      	<tr>
+	      	<th width = "100">Field</th>
+	     	<th width = "400">Details</th>
+      	</tr>
+      	
+      </table>
+      </li>
+      
+      <br><li>Others (You can skip this part) : <br>  <input type = "text" name = "oth"> <input type = "button" value="+"
+        onclick = "add_click_oth();"><br><div id="oth"></div></li>
+    </form>
+    
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+    
+    function num_check(){
+    	if(event.keyCode >= 48 && event.keyCode <=57){
+    		return true;
+    	}
+    	else{
+    		alert("Input Number");
+    		event.returnValue = false;
+    	}
+    }
+    
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imgfile").change(function(){
+        readURL(this);
+    });
+    </script>
+
+    <script>
+      function check_all(){
+        check = document.frm1;
+        cnt = 0;
+       
+        for(var i=0; i<frm1.length-2; i++){
+          if(check[i].value==""){
+            alert("Fill in the blank");
+            return check[i].focus;
+          }
+
+          else {
+            cnt++;
+          }
+
+        }
+          if(cnt == frm1.length-2){
+            alert("Complete!");
+            check.action="complete.jsp";
+            check.submit();
+          }
+      }
+
+      function file_check(obj){
+    	  pathpoint = obj.value.lastIndexOf('.');
+        filepoint = obj.value.substring(pathpoint+1, obj.length);
+        filetype = filepoint.toLowerCase();
+        if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg' || filetype=='bmp'){
+          alert('Image file is uploaded');
+        }
+        else{
+          alert('Choose image file');
+          parentObj = obj.parentNode
+          node = parentObj.replaceChild(obj.cloneNode(true),obj);
+          return false;
+        }
+      }
+
+
+      function add_click_edu(){
+        var addform = document.getElementById("ed");
+        var str = "";
+       
+        str += 'School   :  <input type = "text" name = "edu"><br>';
+        str += 'major    :  <input type = "text" name = "edu"><br>';
+		str += 'duration :  <input type = "text" name = "edu"><br><br>';
+        
+        
+        var added = document.createElement("div");
+        added.innerHTML = str;
+        addform.appendChild(added);
+      }
+      
+  
+      function add_click_exp(){
+          var addform = document.getElementById("ex");
+          var str = '';
+          
+          str += 'Organization   :  <input type = "text" name = "exp"><br>';
+          str += 'duties    :  <input type = "text" name = "exp"><br>';
+          str += 'duration :  <input type = "text" name = "exp"><br><br>'; 
+          
+          var added = document.createElement("div");
+          added.innerHTML = str;
+          addform.appendChild(added);
+        }
+      
+      var cnt = 0;
+      function add_click_sk(){
+          var addform = document.getElementById("sk");
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td");
+          var td2 = document.createElement("td");
+         
+          var addskill = document.getElementById("skills");  
+          var str = 'Field : <input type = "text" name = "field">';
+          str += ' Details : <input type = "text" name = "detail">';
+          var added = document.createElement("div");
+          added.id = "added_"+ cnt;
+          
+          added.innerHTML = str;
+          addskill.appendChild(added);
+          
+          td1.innerText = document.frm1.field[cnt].value;
+          td2.innerText = document.frm1.detail[cnt].value;         
+          
+          addform.appendChild(tr);
+          tr.appendChild(td1);
+          tr.appendChild(td2);   
+             
+          cnt ++;
+     
+      }
+      
+      function delete_click_sk(){
+          var addform = document.getElementById("skills");
+          var del = document.getElementById("added_"+(--cnt));
+          addform.removeChild(del);
+        }
+
+      
+      function add_click_oth(){
+          var addform = document.getElementById("oth");
+          var str = '<input type = "text" name = "oth">';
+          var added = document.createElement("div");
+          added.innerHTML = str;
+          addform.appendChild(added);
+        }
+
+    </script>
+
+    <br><br>
+    <form method="get">
+      <input type="button" value="submit" onclick="check_all();"/>
+    </form>
+    <form action="input.html" method="get">
+      <input type="submit" value="reset" onclick="alert('Reset!')"/>
+    </form>
+    <form action="main.html" method="get">
+      <input type="submit" value="Go back" onclick="alert('Go back to main page!')"/>
+    </form>
+
+
+
+  </body>
+</html>
