@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <title></title>
+    <script type="text/javascript">
+      function create_window(){
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+
+
+        context.fillStyle = "rgb(0,0,200)";
+        context.fillRect(100,100,500,300);
+        context.strokeRect(100,100,500,300);
+        context.strokeRect(100,100,500,100);
+        context.strokeRect(530,330,50,50);
+        context.strokeRect(480,330,50,50);
+        context.font = "bold italic 50pt 나눔고딕";
+        context.textAlign = "center";
+        context.fillStyle="white";
+        context.fillText("My_window",320,170);
+        context.font = "bold italic 30pt 나눔고딕";
+        context.fillText("X",500,370);
+        context.fillText("-",550,370);
+
+        context.beginPath();
+        context.moveTo(900,300);
+        context.lineTo(1000,300);
+        context.quadraticCurveTo(1100,300,1100,350);
+
+        context.lineTo(1100,450);
+        context.quadraticCurveTo(1100,500,1000,500);
+
+        context.lineTo(900,500);
+        context.quadraticCurveTo(800,500,800,450);
+
+        context.lineTo(800,350);
+        context.quadraticCurveTo(800,300,900,300);
+
+        context.StrokeStyle="black";
+        context.lineWidth=1;
+        context.fillStyle = "rgb(80,150,200)";
+        context.fill();
+        context.stroke();
+
+        context.fillStyle="white";
+        context.font = "bold italic 30pt 나눔고딕";
+        context.fillText("My button",950,400);
+
+        context.fillStyle = "rgb(150,40,70)";
+        context.fillRect(600,600,200,150);
+        context.strokeRect(600,600,200,150);
+        context.fillStyle="white";
+        context.font = "bold italic 25pt 나눔고딕";
+        context.fillText("My_button", 700,680);
+
+        context.fillStyle = "rgb(60,150,50)";
+        context.fillRect(900,670,400,300);
+        context.strokeRect(900,670,400,300);
+        context.strokeRect(900,770,400,100);
+        context.fillStyle = "white";
+        context.font = "bold italic 35pt 나눔고딕";
+        context.fillText("item1",1000,730);
+        context.fillText("item2",1000,830);
+        context.fillText("item3",1000,930);
+
+        context.fillStyle = "rgb(120,140,150)";
+        context.fillRect(200,750,300,100);
+        context.strokeRect(200,750,300,100);
+        context.fillStyle = "black";
+        context.font = "bold italic 30pt 나눔고딕";
+        context.fillText("My_Textbox",350,810);
+
+
+      };
+    </script>
+  </head>
+
+  <body onload="create_window();">
+    <h1>Canvas</h1>
+    <canvas id="myCanvas" width="1600" height="1000" style="border:1px solid black">
+    </canvas>
+
+
+  </body>
+</html>
