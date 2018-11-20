@@ -7,3 +7,6 @@ HW3-2 RESUME AUTHORING
 
 HW4-1 CANVAS
 : window.html
+
+HW 4-2 TREE
+: tree.html
