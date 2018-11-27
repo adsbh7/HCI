@@ -5,8 +5,8 @@ HW3-2 RESUME AUTHORING
 : input.html
 : complete.jsp
 
-HW4-1 CANVAS
+HW4-1-1 CANVAS
 : window.html
 
-HW 4-2 TREE
+HW 4-1-2 TREE
 : tree.html
