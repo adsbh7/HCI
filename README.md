@@ -10,3 +10,6 @@ HW4-1-1 CANVAS
 
 HW 4-1-2 TREE
 : tree.html
+
+HW 4-2 HCI Design
+: HCI_2015410211 정혜정_hw4-2.hwp
