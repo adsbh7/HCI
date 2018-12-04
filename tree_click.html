@@ -1,0 +1,287 @@
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <title>Tree</title>
+  </head>
+  <script type="text/javascript">
+      id = 1;
+      var table = [];
+      var w_tmp = [];
+      var w_table = [];
+      var max_depth=0;
+      var id_table = [];
+      var rm_table = [];
+
+      function create_window(pid, id, depth, value){
+        var canvas = document.getElementById("demo");
+        var context = canvas.getContext("2d");
+
+        var check = 0;
+        var cnt = 0;
+        var y_cnt = 0;
+        if(depth == 0){
+          var x = 10;
+          var y = canvas.height/2;
+
+          w_tmp.push([depth, 1]);
+          w_table.push([pid, id, depth, value, x, y, y_cnt]);
+
+          context.beginPath();
+          context.moveTo(x+110, y+30);
+          context.lineTo(x+140, y+30);
+          context.stroke();
+
+          context.beginPath();
+          context.moveTo(x+140, 80);
+          context.lineTo(x+140, 950);
+          context.stroke();
+
+        }
+
+        else{
+          for(var i=0; i<w_tmp.length; i++){
+            if(w_tmp[i][0] == depth){
+              w_tmp[i][1] += 1;
+              var j = i;
+              cnt ++;
+              break;
+            }
+          }
+          if(cnt == 0){
+            w_tmp.push([depth,1]);
+            j = w_tmp.length-1;
+          }
+
+          var x = 190 + (depth-1)*200;
+          var y = 50 + (w_tmp[j][1]-1)*300/depth;
+
+          for(var i=0; i<w_table.length; i++){
+            if((pid != 1) && (pid == w_table[i][1])){
+              y = w_table[i][5] + w_table[i][6]*300/depth;
+              check = w_table[i][6];
+              w_table[i][6] += 1;
+
+            }
+          }
+
+          w_table.push([pid, id, depth, value, x, y, y_cnt]);
+
+          context.beginPath();
+          context.moveTo(x-40, y+30);
+          context.lineTo(x-10, y+30);
+          context.stroke();
+
+          if((pid > 1) && (check == 0)){
+            context.beginPath();
+            context.moveTo(x-90, y+30);
+            context.lineTo(x-40, y+30);
+            context.stroke();
+
+          }
+
+          if(check>0){
+            context.beginPath();
+            context.moveTo(x-40, y+30-300/depth);
+            context.lineTo(x-40, y+30);
+            context.stroke();
+
+          }
+
+        }
+
+        context.strokeRect(x,y,100,50);
+        context.font = "bold italic 20pt 나눔고딕";
+        context.fillStyle = "black";
+        context.fillText(value, x+10, y+30);
+      }
+
+      function clear_canvas(){
+        var canvas = document.getElementById("demo");
+        var context = canvas.getContext("2d");
+
+        context.clearRect(0,0,canvas.width,canvas.height);
+      }
+
+      function alert_node(){
+        var canvas = document.getElementById("demo");
+        var context = canvas.getContext("2d");
+        var x = event.offsetX;
+        var y = event.offsetY;
+
+        var node = document.createElement('ul');
+
+
+        for(i=0; i<w_table.length; i++){
+          if((w_table[i][4]<x) && (x<w_table[i][4]+100) && (w_table[i][5]<y) && (y<w_table[i][5]+50)){
+            var id = w_table[i][1];
+            node.innerHTML = "x : " + x + "<br>y : " + y + "<br>";
+            search_node(id);
+            break;
+          }
+          if(i==w_table.length-1){
+            alert("Click the node");
+          }
+        }
+        document.getElementById('root').appendChild(node);
+
+      }
+
+
+      function create_root(){
+          //var node = document.createElement("ul");
+          input = document.getElementById("root_data");
+          pid = 0;
+          depth = 0;
+          if (input.value == ""){
+            alert("Fill in the blank");
+          }
+          else{
+            table.push([pid, id, depth, id+") "+input.value]);
+          }
+          create_window(pid, id, depth, id+") "+input.value);
+
+          //node.innerHTML = id + "> " + input.value;
+          //document.getElementById('root').appendChild(node);
+          id++;
+
+      }
+
+      function add_node(pid, value){
+        //var node = document.createElement("ul");
+        for(var i = 0; i < table.length; i++){
+          if(table[i][1] == pid){
+            var n_pid = pid;
+            var depth = table[i][2]+1;
+
+            if(max_depth < depth){
+              max_depth = depth;
+            }
+          }
+        }
+
+        if (value == ""){
+          alert("Fill in the blank");
+        }
+        else{
+          table.push([n_pid, id, depth, id+") "+value]);
+        }
+        create_window(pid, id, depth,  id+") "+value);
+
+        //node.innerHTML = "<li>" + id + ">> " + value + "depth"+depth+"</li>";
+        //document.getElementById('root').appendChild(node);
+        id++;
+      }
+
+
+
+
+      function delete_f(id){
+        for(var j=0;j<w_table.length;j++){
+          if(w_table[j][0]==id){
+            if(w_table[j][6]>0){
+              id_table.push(w_table[j][1]);
+            }
+            w_table.splice(j,1);
+            j--;
+          }
+        }
+      }
+
+
+      function id_f(){
+        for(var j=0;j<id_table.length;j++){
+            var id = id_table[0];
+            delete_f(id);
+            id_table.splice(0,1);
+            j--;
+          }
+      }
+
+      function delete_node(id){
+            //var rm = document.getElementById('root');
+            //rm.removeChild(rm.childNodes[i]);
+
+          for(var i=0; i<w_table.length; i++){
+            if(w_table[i][1] == id){
+              w_table.splice(i,1);
+              delete_f(id);
+              id_f();
+              break;
+            }
+
+          }
+
+
+        table=[];
+        for(var i=0; i<w_table.length; i++){
+          table.push(w_table[i]);
+        }
+
+
+
+        clear_canvas();
+        var rew_table = w_table;
+        w_table = [];
+        w_tmp = [];
+        for(var i=0; i<rew_table.length; i++){
+          create_window(rew_table[i][0], rew_table[i][1], rew_table[i][2], rew_table[i][3]);
+        }
+
+        }
+
+      function search_node(id){
+        for(var i=0; i<table.length; i++){
+          if(table[i][1] == id){
+            pid = table[i][0];
+            var tmp = [];
+            tmp.push(table[i]);
+            for(var k=0; k<table[i][2]; k++){
+              for(j=0;j<table.length;j++){
+                if(table[j][1] == pid){
+                  pid = table[j][0];
+                  tmp.push(table[j]);
+                  break;
+                }
+              }
+            }
+            break;
+          }
+        }
+        var node = document.createElement('ul');
+        node.innerHTML = "<strong>Search>></strong><br>Depth : " + tmp[0][2];
+        node.innerHTML += "<br>ID & Data : " + tmp[0][3];
+        node.innerHTML += "<br>From Root : "
+        for(var i=1; i<tmp.length+1; i++){
+          node.innerHTML += tmp[tmp.length-i][3];
+          if(i==tmp.length){
+            break;
+          }
+          node.innerHTML += " -> ";
+        }
+        document.getElementById('root').appendChild(node);
+      }
+
+
+    </script>
+
+
+  <body>
+    <h1>Tree</h1>
+    <h2>Creating tree</h2>
+
+      <form name=c_tree>
+        Root : <input type="text" id = "root_data"> <input type = "button" value ="root" onclick = "create_root();"><br>
+        Add Node : <input type="text" id = "n_pid" placeholder="pid"> <input type ="text" id = "node_data" placeholder="new data">
+        <input type = "button" value = "+" onclick="add_node(n_pid.value, node_data.value);"><br>
+        Delete Node : <input type = "text" id = "d_id" placeholder="id"> <input type = "button" value = "X" onclick="delete_node(d_id.value);"><br>
+        Search Node : <input type = "text" id = "s_id" placeholder="id"> <input type = "button" value = "search" onclick="search_node(s_id.value);">
+      </form>
+
+
+    <h2>Demonstration Part</h2>
+      <div id="root"></div>
+      <canvas id="demo" width="1600" height="1000" style="border:1px solid black" onclick="alert_node(event);">
+      </canvas>
+
+  </body>
+</html>
